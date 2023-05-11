@@ -1,0 +1,54 @@
+---
+- hosts: all
+  any_errors_fatal: true
+  become: true
+  name: Backup Minecraft Server data files
+
+  tasks:
+    - name: Determine Minecraft container ID
+      ansible.builtin.command:
+        cmd: docker ps -a -q --filter "name=minecraft_*"
+      register: container_id
+      failed_when: container_id.stdout | length == 0
+      changed_when: false
+
+    - name: Determine Minecraft data folder
+      ansible.builtin.command:
+        cmd: find /opt -type d -name "minecraft_*"
+      register: container_folder
+      failed_when: container_folder.stdout | length == 0
+      changed_when: false
+
+    - name: Determine backup timestamp
+      ansible.builtin.command:
+        cmd: date +%Y%m%d_%H%M%S
+      register: container_timestamp
+      changed_when: false
+
+    - name: Stop Minecraft container
+      ansible.builtin.command: "docker stop {{ container_id.stdout }}"
+      register: results
+      changed_when: >-
+        container_id.stdout in results.stdout | default(false)
+
+    - name: Backup Minecraft data files
+      ansible.builtin.command:
+        argv:
+          - tar
+          - --create
+          - --gzip
+          - --directory
+          - "{{ container_folder.stdout }}"
+          - --file
+          - /opt/{{ ansible_hostname }}_{{ container_timestamp.stdout }}.tar.gz
+          - .
+      register: results
+      changed_when: results.rc == 0
+      failed_when: results.rc != 0
+
+
+    - name: Start Minecraft container
+      ansible.builtin.command: "docker start {{ container_id.stdout }}"
+      register: results
+      changed_when: >-
+        container_id.stdout in results.stdout | default(false)

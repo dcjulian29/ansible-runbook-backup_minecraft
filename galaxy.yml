@@ -1,0 +1,25 @@
+---
+authors: ["Julian Easterling <julian@julianscorner.com>"]
+build_ignore:
+  - README.md
+  - build.cmd
+  - .gitignore
+  - .vscode
+  - .github
+  - .ansible-lint
+  - .gitattributes
+  - .yamllint
+  - .editorconfig
+description: Runbook that will backup the data files for a Minecraft server
+homepage: https://github.com/dcjulian29/ansible-runbook-backup_minecraft
+issues: https://github.com/dcjulian29/ansible-runbook-backup_minecraft/issues
+license: ["Apache-2.0"]
+name: backup_minecraft
+namespace: dcjulian29
+readme: https://github.com/dcjulian29/ansible-runbook-backup_minecraft/blob/main/README.md
+repository: https://github.com/dcjulian29/ansible-runbook-backup_minecraft
+tags:
+  - dcjulian29
+  - minecraft
+  - backup
+version: 0.9.0

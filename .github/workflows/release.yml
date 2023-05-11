@@ -1,0 +1,35 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "[0-9].[0-9].[0-9]"
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 3
+
+      - run: |
+          python3 -m pip install pip
+          pip3 install ansible
+          ansible-galaxy collection build
+
+      - id: v1
+        run: echo "version=$(echo ${GITHUB_REF} | cut -d / -f 3)" >> $GITHUB_OUTPUT
+
+      - uses: softprops/action-gh-release@v1
+        with:
+          files: dcjulian29-backup_minecraft-${{ steps.v1.outputs.version }}.tar.gz
+          tag_name: ${{ steps.v1.outputs.version }}
+          token: ${{ github.token }}
+          draft: false
+          prerelease: false
