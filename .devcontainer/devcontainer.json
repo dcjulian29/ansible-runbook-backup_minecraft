@@ -1,0 +1,45 @@
+{
+	"name": "ansible-runbook-backup_minecraft",
+	"image": "mcr.microsoft.com/devcontainers/python:1-3-bookworm",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
+      "version": "latest"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "files.associations": {
+          "playbooks/*.yml": "ansible"
+        },
+        "ansible.ansible.useFullyQualifiedCollectionNames": true,
+        "ansible.ansibleLint.enabled": true,
+        "ansible.python.interpreterPath": "/usr/bin/python3",
+        "editor.bracketPairColorization.independentColorPoolPerBracketType": true,
+        "editor.rulers": [
+          90,
+          120
+        ],
+        "yaml.yamlVersion": "1.2",
+        "yaml.format.enable": true,
+        "yaml.format.singleQuote": true,
+        "yaml.format.bracketSpacing": true,
+        "yaml.validate": true,
+        "yaml.completion": true,
+        "yaml.schemaStore.enable": true,
+        "terminal.integrated.defaultProfile.linux": "bash"
+      },
+      "extensions": [
+		"redhat.ansible",
+		"streetsidesoftware.code-spell-checker",
+		"editorconfig.editorconfig",
+    "samuelcolvin.jinjahtml"
+	]
+    }
+  },
+  "containerEnv": {
+    "ANSIBLE_CONFIG": "${containerWorkspaceFolder}/ansible.cfg",
+    "containerWorkspaceFolder": "${containerWorkspaceFolder}"
+  },
+  "postCreateCommand": "bash .devcontainer/install.sh"
+}
