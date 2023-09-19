@@ -36,19 +36,28 @@
         argv:
           - tar
           - --create
-          - --gzip
           - --directory
           - "{{ container_folder.stdout }}"
           - --file
-          - /opt/{{ ansible_hostname }}_{{ container_timestamp.stdout }}.tar.gz
+          - /opt/{{ ansible_hostname }}_{{ container_timestamp.stdout }}.tar
           - .
       register: results
       changed_when: results.rc == 0
       failed_when: results.rc != 0
-
 
     - name: Start Minecraft container
       ansible.builtin.command: "docker start {{ container_id.stdout }}"
       register: results
       changed_when: >-
         container_id.stdout in results.stdout | default(false)
+
+    - name: Compress Minecraft backup file
+      ansible.builtin.command:
+        argv:
+          - gzip
+          - --best
+          - --verbose
+          - /opt/{{ ansible_hostname }}_{{ container_timestamp.stdout }}.tar
+      register: results
+      changed_when: results.rc == 0
+      failed_when: results.rc != 0
