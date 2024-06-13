@@ -57,7 +57,7 @@ jobs:
       - id: vars
         run: echo "version=$(echo ${GITHUB_REF} | cut -d / -f 3)" >> $GITHUB_OUTPUT
 
-      - uses: softprops/action-gh-release@v1.1.0
+      - uses: softprops/action-gh-release@v2.0.5
         with:
           files: dcjulian29-backup_minecraft-${{ steps.vars.outputs.version }}.tar.gz
           tag_name: ${{ steps.vars.outputs.version }}
