@@ -1,5 +1,5 @@
 ---
-authors: ["Julian Easterling <julian@julianscorner.com>"]
+authors: ["Julian Easterling"]
 build_ignore:
   - .devcontainer
   - README.md
