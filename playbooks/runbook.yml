@@ -1,8 +1,8 @@
 ---
-- hosts: all
+- name: Backup Minecraft Server data files
+  hosts: all
   any_errors_fatal: true
   become: true
-  name: Backup Minecraft Server data files
 
   tasks:
     - name: Determine Minecraft container ID
